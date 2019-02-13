@@ -1,0 +1,155 @@
+<html>
+	<head>
+		<title>Jupiter rules & factorise</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+        <div id="container"></div>
+
+
+        <script src="three.min.js"></script>
+        <script src="OrbitControls.js"></script>
+		<script>
+            
+                let scene = new THREE.Scene();
+                let camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 1000);
+                let renderer = new THREE.WebGLRenderer();
+
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+                camera.position.set(0,0,100)
+
+                let light = new THREE.AmbientLight( 0x888888);
+                scene.add(light);
+
+                let light2 = new THREE.DirectionalLight( 0xfdfcf0, 1);
+                light2.position.set(20,10,20);
+                scene.add(light2);
+
+                let creerAstreGeometry = function(radius, widthSegments, heightSegments){
+                    let astreGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments)
+                }
+                
+                let creerAstreMaterial = function(colorAstre, specularAstre, shinynessAstre){
+                    let astreMatrial = new THREE.MeshPhongMaterial({
+                        color: colorAstre,
+                        specular: specularAstre,
+                        shinyness: shinynessAstre
+                    })
+                }
+
+                let creerAstre = function(nomAstre, geometryAstre, materialAstre){
+                    let nomAstre = new THREE.Mesh(geometryAstre, materialAstre)
+                    scene.add(nomAstre)
+                }
+
+             
+
+                let jupiterGeometry = new THREE.SphereGeometry(10, 50, 50);
+                let jupiterMaterial = new THREE.MeshPhongMaterial({
+                    map: new THREE.ImageUtils.loadTexture('jupitermap.jpg'),
+                    color: 0xbf856c, 
+                    specular: 0x009900, 
+                    shinyness: 10 }
+                )
+                let jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
+                scene.add(jupiter);
+
+                let ioGeometry = new THREE.SphereGeometry(3, 50, 50);
+                let ioMaterial = new THREE.MeshPhongMaterial({
+                   
+                    color: 0xa5A246, 
+                    specular: 0x009900, 
+                    shinyness: 20 }
+                )
+                let io = new THREE.Mesh(ioGeometry, ioMaterial);
+                scene.add(io)
+                
+
+                
+
+                let europaGeometry = new THREE.SphereGeometry(3, 50, 50);
+                let europaMaterial = new THREE.MeshPhongMaterial({
+                   
+                    color: 0x9A7C54, 
+                    specular: 0x009900, 
+                    shinyness: 20 }
+                )
+                let europa = new THREE.Mesh(europaGeometry, europaMaterial);
+                scene.add(europa)
+                
+
+                let europaOrbitRadius = 60;
+
+                let ganymedeGeometry = new THREE.SphereGeometry(3.5, 50, 50);
+                let ganymedeMaterial = new THREE.MeshPhongMaterial({
+                   
+                    color: 0x918A7F, 
+                    specular: 0x009900, 
+                    shinyness: 5 }
+                )
+                let ganymede = new THREE.Mesh(ganymedeGeometry, ganymedeMaterial);
+                scene.add(ganymede)
+                
+
+                let ganymedeOrbitRadius = 70;
+
+                let callistoGeometry = new THREE.SphereGeometry(3.5, 50, 50);
+                let callistoMaterial = new THREE.MeshPhongMaterial({
+                   
+                    color: 0x4B3A28, 
+                    specular: 0x009900, 
+                    shinyness: 5 }
+                )
+                let callisto = new THREE.Mesh(callistoGeometry, callistoMaterial);
+                scene.add(callisto)
+                
+
+                let date;
+              
+
+                let orbit = new THREE.OrbitControls(camera, renderer.domElement);
+
+                let render = function(){
+                    jupiter.rotation.y += .0015;
+                    date = Date.now()*0.001;
+
+                    io.position.set(
+                        Math.cos(date) * ioOrbitRadius * 1,
+                        0,
+                        Math.sin(date) * ioOrbitRadius * 1 ,
+                    )
+
+                    europa.position.set(
+                        Math.cos(date*0.8) * europaOrbitRadius * 2,
+                        0,
+                        Math.sin(date*0.8) * europaOrbitRadius * 2,
+                    )
+
+                   ganymede.position.set(
+                        Math.cos(date*0.5) * ganymedeOrbitRadius * 3,
+                        0,
+                        Math.sin(date*0.5) * ganymedeOrbitRadius * 3,
+                    )
+
+                    callisto.position.set(
+                        Math.cos(date*0.3) * ganymedeOrbitRadius,
+                        0,
+                        Math.sin(date*0.3) * ganymedeOrbitRadius,
+                    )
+
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(render);
+                }
+
+                render();
+
+
+
+	
+		</script>
+	</body>
+</html>
