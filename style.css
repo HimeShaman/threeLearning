@@ -19,7 +19,11 @@ canvas {
 }
 
 #overlay {
-    width: 50%;
+    width: 450px;
     height: 100px;
+}
+
+.col{
+    display: inline-block;
 }
     

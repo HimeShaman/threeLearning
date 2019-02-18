@@ -1,4 +1,8 @@
 const scene = new THREE.Scene();
+let loader = new THREE.Loader();
+stars = loader.load('galaxy_starfield.png');
+scene.backround = stars;
+
 const camera = new THREE.PerspectiveCamera(
   45,
   window.innerWidth / window.innerHeight,
@@ -86,34 +90,35 @@ const callistoOrbite = creerTraceOrbite(jupiter, callisto, {});
 scene.add(callisto);
 scene.add(callistoOrbite);
 
-var orbit = new THREE.OrbitControls(camera, renderer.domElement);
+let orbit = new THREE.OrbitControls(camera, renderer.domElement);
+let coeff = 1;
 
 const render = function() {
-  jupiter.rotation.y += 0.0015;
+  jupiter.rotation.y += 0.0015 * coeff;
   date = Date.now() * 0.001;
-
+  
   io.position.set(
-    Math.cos(date) * ioOrbite.geometry.parameters.radius,
+    Math.cos(date * coeff) * ioOrbite.geometry.parameters.radius,
     0,
-    Math.sin(date) * ioOrbite.geometry.parameters.radius
+    Math.sin(date * coeff) * ioOrbite.geometry.parameters.radius,
   );
 
   europa.position.set(
-    Math.cos(date * 0.8) * europaOrbite.geometry.parameters.radius,
+    Math.cos(date * 0.8 * coeff) * europaOrbite.geometry.parameters.radius,
     0,
-    Math.sin(date * 0.8) * europaOrbite.geometry.parameters.radius
+    Math.sin(date * 0.8 * coeff) * europaOrbite.geometry.parameters.radius
   );
 
   ganymede.position.set(
-    Math.cos(date * 0.5) * ganymedeOrbite.geometry.parameters.radius,
+    Math.cos(date * 0.5 * coeff) * ganymedeOrbite.geometry.parameters.radius,
     0,
-    Math.sin(date * 0.5) * ganymedeOrbite.geometry.parameters.radius
+    Math.sin(date * 0.5 * coeff) * ganymedeOrbite.geometry.parameters.radius
   );
 
   callisto.position.set(
-    Math.cos(date * 0.3) * callistoOrbite.geometry.parameters.radius,
+    Math.cos(date * 0.3 * coeff) * callistoOrbite.geometry.parameters.radius,
     0,
-    Math.sin(date * 0.3) * callistoOrbite.geometry.parameters.radius
+    Math.sin(date * 0.3 * coeff) * callistoOrbite.geometry.parameters.radius
   );
 
   ioOrbite.visible = europaOrbite.visible = ganymedeOrbite.visible = callistoOrbite.visible = showOrbit;
@@ -134,6 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
         render();
     }
 
+    document.getElementById('range').oninput = (event) => {
+        coeff = event.target.value;
+        render();
+    }
+
 });
+
+
 
 
